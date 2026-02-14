@@ -1,0 +1,363 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #4ecdc4;
+  --color-secondary: #ff6b6b;
+  --color-tertiary: #ffe66d;
+  --color-background: #0a0f18;
+  --color-surface: #161e2d;
+  --color-text: #f5f6f5;
+
+  --font-sans: "Inter", "system-ui", "-apple-system", "sans-serif";
+  --font-mono: "Fira Code", "Courier New", "monospace";
+
+  --radius-4xl: 2rem;
+  --radius-5xl: 3rem;
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes pulse-glow {
+
+    0%,
+    100% {
+      opacity: 0.3;
+      filter: blur(20px);
+    }
+
+    50% {
+      opacity: 0.6;
+      filter: blur(40px);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-glow: pulse-glow 4s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s infinite;
+}
+
+@layer base {
+  :root {
+    --primary-rgb: 78, 205, 196;
+    --background-rgb: 10, 15, 24;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-text min-h-screen overflow-x-hidden transition-colors duration-500 antialiased;
+  }
+
+  body ::selection {
+    background: rgba(78, 205, 196, 0.3);
+  }
+
+  /* Smooth Focus */
+  :focus-visible {
+    @apply outline-primary/50 outline-2 outline-offset-4;
+  }
+}
+
+@layer components {
+  .glass {
+    position: relative;
+    background: rgba(22, 30, 45, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .glass-card {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2rem;
+    transition: all 0.7s ease;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .glass-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(78, 205, 196, 0.3);
+  }
+
+  .glass-card::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-0 transition-opacity duration-700;
+  }
+
+  .glass-card:hover::before {
+    @apply opacity-100;
+  }
+
+  .neumorph {
+    @apply bg-gradient-to-br from-background via-surface/40 to-background rounded-3xl transition-all duration-500;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4), -5px -5px 15px rgba(255, 255, 255, 0.02);
+  }
+
+  .neumorph:hover {
+    box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.5), inset -2px -2px 8px rgba(255, 255, 255, 0.01);
+    @apply scale-[1.005];
+  }
+
+  .glow-border {
+    @apply relative border border-white/10 rounded-3xl transition-all duration-500;
+  }
+
+  .glow-border:hover {
+    border-color: rgba(78, 205, 196, 0.4);
+    box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.15);
+  }
+
+  .text-glow {
+    filter: drop-shadow(0 0 8px rgba(78, 205, 196, 0.5));
+  }
+
+  .section-container {
+    @apply max-w-7xl mx-auto px-6 py-24 md:py-32;
+  }
+}
+
+/* Scroll Progress */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  z-index: 60;
+  width: 0;
+  transition: width 0.1s ease-out;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-tertiary));
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.5);
+}
+
+/* Custom Cursor */
+.custom-cursor {
+  @apply fixed w-8 h-8 rounded-full pointer-events-none hidden md:block;
+  border: 1px solid rgba(78, 205, 196, 0.5);
+  z-index: 9999;
+  transition: transform 0.15s ease;
+  mix-blend-mode: difference;
+  backdrop-filter: blur(2px);
+  transform: translate(-50%, -50%);
+}
+
+.cursor-dot {
+  @apply fixed w-1.5 h-1.5 bg-primary rounded-full pointer-events-none hidden md:block;
+  z-index: 9999;
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 1);
+  transform: translate(-50%, -50%);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  border: 2px solid var(--color-background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(78, 205, 196, 0.4);
+}
+
+/* Typing Cursor */
+.typed-cursor {
+  @apply text-primary font-bold opacity-80;
+}
+
+/* ===================== LIGHT THEME ===================== */
+.light-theme {
+  --color-background: #f0f4f8;
+  --color-surface: #ffffff;
+  --color-text: #1e293b;
+  --primary-rgb: 78, 205, 196;
+  --background-rgb: 240, 244, 248;
+}
+
+/* Glass surfaces in light mode */
+.light-theme .glass {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+.light-theme .glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.light-theme .glass-card:hover {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(78, 205, 196, 0.35);
+  box-shadow: 0 8px 32px rgba(78, 205, 196, 0.1);
+}
+
+.light-theme .glass-card::before {
+  background: linear-gradient(135deg, rgba(78, 205, 196, 0.08), transparent, transparent);
+}
+
+/* All white text → dark in light mode */
+.light-theme h1,
+.light-theme h2,
+.light-theme h3,
+.light-theme h4 {
+  color: #0f172a !important;
+}
+
+.light-theme .text-white {
+  color: #1e293b !important;
+}
+
+/* Borders and dividers */
+.light-theme .border-white\/5,
+.light-theme .border-white\/10 {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+.light-theme .border-t {
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Subtle backgrounds */
+.light-theme .bg-white\/5 {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.light-theme .bg-white\/\[0\.03\] {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Text opacity adjustments */
+.light-theme .text-text\/40 {
+  color: rgba(30, 41, 59, 0.55) !important;
+}
+
+.light-theme .text-text\/60 {
+  color: rgba(30, 41, 59, 0.7) !important;
+}
+
+.light-theme .text-text\/70 {
+  color: rgba(30, 41, 59, 0.8) !important;
+}
+
+.light-theme .text-text\/80 {
+  color: rgba(30, 41, 59, 0.9) !important;
+}
+
+.light-theme .text-white\/20 {
+  color: rgba(30, 41, 59, 0.3) !important;
+}
+
+/* Neumorph in light mode */
+.light-theme .neumorph {
+  background: linear-gradient(135deg, #f0f4f8, #ffffff, #f0f4f8);
+  box-shadow: 6px 6px 16px rgba(0, 0, 0, 0.08), -6px -6px 16px rgba(255, 255, 255, 0.9);
+}
+
+/* Glow border in light mode */
+.light-theme .glow-border:hover {
+  box-shadow: 0 0 25px rgba(78, 205, 196, 0.2);
+}
+
+/* Canvas/Particles: lighter background */
+.light-theme canvas {
+  opacity: 0.3;
+}
+
+/* Scrollbar */
+.light-theme ::-webkit-scrollbar-track {
+  background: #f0f4f8;
+}
+
+.light-theme ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-color: #f0f4f8;
+}
+
+.light-theme ::-webkit-scrollbar-thumb:hover {
+  background: rgba(78, 205, 196, 0.5);
+}
+
+/* Custom cursor visibility */
+.light-theme .custom-cursor {
+  border-color: rgba(78, 205, 196, 0.7);
+  mix-blend-mode: normal;
+}
+
+/* Scroll progress bar */
+.light-theme .scroll-progress {
+  box-shadow: 0 0 8px rgba(78, 205, 196, 0.4);
+}
+
+/* Image adjustments */
+.light-theme .grayscale {
+  filter: grayscale(30%);
+}
+
+/* Form inputs */
+.light-theme input,
+.light-theme textarea {
+  background: rgba(0, 0, 0, 0.03) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #1e293b !important;
+}
+
+.light-theme input::placeholder,
+.light-theme textarea::placeholder {
+  color: rgba(30, 41, 59, 0.3) !important;
+}
+
+/* Primary button stays vivid */
+.light-theme .bg-primary {
+  box-shadow: 0 8px 20px rgba(78, 205, 196, 0.25);
+}
+
+/* Transparent text gradient fix */
+.light-theme .text-transparent {
+  color: transparent !important;
+}
+
+.light-theme .bg-clip-text {
+  -webkit-text-fill-color: transparent;
+}
+
+/* Navbar fix */
+.light-theme .bg-background\/60 {
+  background: rgba(240, 244, 248, 0.75) !important;
+  backdrop-filter: blur(24px);
+}
+
+.light-theme .bg-background\/95 {
+  background: rgba(240, 244, 248, 0.95) !important;
+}
